@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8t20bp2eisu3"]
+
+[ext_resource type="PackedScene" uid="uid://b3plyukpd7eio" path="res://scenes/enemy.tscn" id="1_82h5j"]
+[ext_resource type="Texture2D" uid="uid://cmnqthrdm2jdh" path="res://textures/Enemies/enemyRed2.png" id="2_csrje"]
+
+[node name="DiverEnemy" instance=ExtResource("1_82h5j")]
+Speed = 250.0
+Value = 200
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_csrje")

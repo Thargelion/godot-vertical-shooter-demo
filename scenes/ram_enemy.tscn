@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctjrnidicdj0r"]
+
+[ext_resource type="PackedScene" uid="uid://b3plyukpd7eio" path="res://scenes/enemy.tscn" id="1_6r27v"]
+[ext_resource type="Texture2D" uid="uid://sy5pvmui112n" path="res://textures/Enemies/enemyRed4.png" id="2_ostij"]
+
+[node name="ram_enemy" instance=ExtResource("1_6r27v")]
+Speed = 100.0
+Value = 300
+Health = 40
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(1, 1)
+texture = ExtResource("2_ostij")
+
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2(0, -2)
