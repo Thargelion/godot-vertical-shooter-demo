@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://dw63wresywefv"]
+[gd_scene load_steps=4 format=3 uid="uid://dw63wresywefv"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_8n6if"]
 [ext_resource type="Texture2D" uid="uid://bmo54xpjn46jk" path="res://textures/playerShip1_green.png" id="1_a5v6f"]
+[ext_resource type="PackedScene" uid="uid://b51fnvwdue3jb" path="res://scenes/components/HealthComponent.tscn" id="2_3xroi"]
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_8n6if")
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_3xroi")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_a5v6f")

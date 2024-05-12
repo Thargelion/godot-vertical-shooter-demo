@@ -1,7 +1,8 @@
 using Godot;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+namespace ResearchVertical.Scripts;
 
 public partial class Player : CharacterBody2D
 {
@@ -10,7 +11,7 @@ public partial class Player : CharacterBody2D
     public const string Group = "player";
     private const float Speed = 300.0f;
     public const float JumpVelocity = -400.0f;
-    private PackedScene _laserScene = ResourceLoader.Load(Laser.Path) as PackedScene;
+    private PackedScene _laserScene = ResourceLoader.Load(Components.Laser.Path) as PackedScene;
     private bool _isCannonHot;
 
     [Export(PropertyHint.Range, "0,10,1,or_greater")]
@@ -59,8 +60,8 @@ public partial class Player : CharacterBody2D
 
     private void PullTrigger()
     {
-        if (_isCannonHot) return;
-        EmitSignal(SignalName.LaserShot, _laserScene, this._muzzle.GlobalPosition);
+        if (this._isCannonHot) return;
+        EmitSignal(global::Player.SignalName.LaserShot, this._laserScene, this._muzzle.GlobalPosition);
         this._isCannonHot = true;
         Task.Run(() =>
         {
@@ -80,7 +81,7 @@ public partial class Player : CharacterBody2D
 
     private void Die()
     {
-        EmitSignal(SignalName.Killed);
+        EmitSignal(global::Player.SignalName.Killed);
         QueueFree();
     }
 }

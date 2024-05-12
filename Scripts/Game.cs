@@ -3,6 +3,8 @@ using Godot.Collections;
 using FileAccess = Godot.FileAccess;
 using Timer = Godot.Timer;
 
+namespace ResearchVertical.Scripts;
+
 public partial class Game : Node2D
 {
     private Node2D _player;
@@ -29,15 +31,15 @@ public partial class Game : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        this._loadGame();
-        this._getNodes();
-        _player.GlobalPosition = this._playerSpawnPosition.GlobalPosition;
-        _player.Connect("LaserShot",
+        _loadGame();
+        _getNodes();
+        this._player.GlobalPosition = this._playerSpawnPosition.GlobalPosition;
+        this._player.Connect("LaserShot",
             Callable.From(
                 (PackedScene laserScene, Vector2 location) => { this._onPlayerLaserShot(laserScene, location); }
             )
         );
-        _player.Connect("Killed", Callable.From(() => { this._onPlayerKilled(); }));
+        this._player.Connect("Killed", Callable.From(() => { this._onPlayerKilled(); }));
     }
 
     private void _saveGame()
@@ -68,14 +70,14 @@ public partial class Game : Node2D
         var newOffset = 0f;
         if (this._parallaxBackground.ScrollOffset.Y <= 960)
         {
-            newOffset = this._parallaxBackground.ScrollOffset.Y + delta * _scrollSpeed;
+            newOffset = this._parallaxBackground.ScrollOffset.Y + delta * this._scrollSpeed;
         }
 
         this._parallaxBackground.ScrollOffset =
             new Vector2(this._parallaxBackground.ScrollOffset.X, newOffset);
     }
 
-    public void _onEnemyKilled(Enemy enemy)
+    public void _onEnemyKilled(ResearchVertical.Scripts.Enemy enemy)
     {
         this._score += enemy.Value;
         if (this._score > this._highScore)
@@ -92,12 +94,12 @@ public partial class Game : Node2D
     public void OnEnemySpawnTimerTimeout()
     {
         var rand = new RandomNumberGenerator();
-        if (EnemyScenes[rand.RandiRange(0, TotalEnemyTypes - 1)].Instantiate() is not Enemy enemy) return;
+        if (EnemyScenes[rand.RandiRange(0, TotalEnemyTypes - 1)].Instantiate() is not ResearchVertical.Scripts.Enemy enemy) return;
         enemy.GlobalPosition = new Vector2(rand.RandfRange(0, 540), -10);
         enemy.Connect("Killed", Callable.From(
             () => { this._onEnemyKilled(enemy); })
         );
-        _enemyContainer.AddChild(enemy);
+        this._enemyContainer.AddChild(enemy);
     }
 
     private async void _loadGame()
@@ -121,22 +123,22 @@ public partial class Game : Node2D
 
     private void _getNodes()
     {
-        _enemySpawnTimer = GetNode("EnemySpawnTimer") as Timer;
-        _playerSpawnPosition = GetNode("PlayerSpawnPos") as Node2D;
-        _laserContainer = GetNode("LaserContainer") as Node2D;
-        _enemyContainer = GetNode("EnemyContainer") as Node2D;
-        _hud = GetNode("UILayer/HUD") as Hud;
-        _gameOverScreen = GetNode("UILayer/GameOverScreen") as GameOverScreen;
-        _player = GetNode("Player") as Node2D;
-        _parallaxBackground = GetNode("ParallaxBackground") as ParallaxBackground;
-        _laserSound = GetNode("SFX/LaserSound") as AudioStreamPlayer;
-        _hitSound = GetNode("SFX/HitSound") as AudioStreamPlayer;
-        _explodeSound = GetNode("SFX/ExplodeSound") as AudioStreamPlayer;
+        this._enemySpawnTimer = GetNode("EnemySpawnTimer") as Timer;
+        this._playerSpawnPosition = GetNode("PlayerSpawnPos") as Node2D;
+        this._laserContainer = GetNode("LaserContainer") as Node2D;
+        this._enemyContainer = GetNode("EnemyContainer") as Node2D;
+        this._hud = GetNode("UILayer/HUD") as Hud;
+        this._gameOverScreen = GetNode("UILayer/GameOverScreen") as GameOverScreen;
+        this._player = GetNode("Player") as Node2D;
+        this._parallaxBackground = GetNode("ParallaxBackground") as ParallaxBackground;
+        this._laserSound = GetNode("SFX/LaserSound") as AudioStreamPlayer;
+        this._hitSound = GetNode("SFX/HitSound") as AudioStreamPlayer;
+        this._explodeSound = GetNode("SFX/ExplodeSound") as AudioStreamPlayer;
     }
 
     private void _onPlayerLaserShot(PackedScene laserScene, Vector2 location)
     {
-        var laser = laserScene.Instantiate() as Laser;
+        var laser = laserScene.Instantiate() as Components.Laser;
         laser.GlobalPosition = location;
         this._laserContainer.AddChild(laser);
         this._laserSound.Play();
@@ -145,9 +147,9 @@ public partial class Game : Node2D
     private async void _onPlayerKilled()
     {
         const double timeout = 1.5;
-        _explodeSound.Play();
-        _gameOverScreen.SetScore(this._score);
-        _gameOverScreen.SetHighScore(this._highScore);
+        this._explodeSound.Play();
+        this._gameOverScreen.SetScore(this._score);
+        this._gameOverScreen.SetHighScore(this._highScore);
         this._saveGame();
         await ToSignal(GetTree().CreateTimer(timeout), SceneTreeTimer.SignalName.Timeout);
         this._gameOverScreen.Visible = true;

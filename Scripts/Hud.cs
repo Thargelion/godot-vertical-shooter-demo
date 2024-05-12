@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace ResearchVertical.Scripts;
 
 public partial class Hud : Control
 {

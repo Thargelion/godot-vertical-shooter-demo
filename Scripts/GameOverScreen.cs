@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace ResearchVertical.Scripts;
 
 public partial class GameOverScreen : Control
 {
@@ -29,8 +30,8 @@ public partial class GameOverScreen : Control
     }
 
     /**
-     * Restarts the game.
-     */
+ * Restarts the game.
+ */
     public void OnRestartButtonPressed()
     {
         GetTree().ReloadCurrentScene();

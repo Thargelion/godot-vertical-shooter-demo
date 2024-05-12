@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace ResearchVertical.Scripts.Components;
 
 public partial class Laser : Area2D
 {
@@ -38,7 +39,7 @@ public partial class Laser : Area2D
 
     public void OnAreaEntered(Area2D area)
     {
-        if (area is not Enemy enemy) return;
+        if (area is not ResearchVertical.Scripts.Enemy enemy) return;
         enemy.Harm(this.Damage);
         QueueFree();
     }

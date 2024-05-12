@@ -1,5 +1,7 @@
 using Godot;
 
+namespace ResearchVertical.Scripts;
+
 public partial class Enemy : Area2D
 {
     public const string Group = "enemy";
@@ -42,7 +44,7 @@ public partial class Enemy : Area2D
     {
         this.Health -= (int)damage;
         if (this.Health > 0) return;
-        EmitSignal(SignalName.Killed);
+        EmitSignal(Enemy.SignalName.Killed);
         QueueFree();
     }
 
